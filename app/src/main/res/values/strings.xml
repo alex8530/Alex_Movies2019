@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Alex_Movies2019</string>
+    <string name="overview">this is overvirethis is
+        s is overvirethis is overvirethis is overvirethis is overvirethis
+        is overvirethis is overvirethis is overvirethis is overvirethis is o
+        irethis is overvirethis is overvirethis is overvirethis is overvire</string>
+
+    <string name="topRat">Top Rated</string>
+    <string name="popular_movies">popular Movies</string>
+
+    <string name="title_activity_fullscreen_seplash">FullscreenActivitySeplash</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+</resources>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.noone.alex_movies2019.DetailsActivity">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:id="@+id/detailes_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_launcher_background" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/detailes_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="25sp"
+                    android:text="This Is Title"
+                     />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp"
+                    android:text="Release Date"
+                     />
+
+                <TextView
+                    android:id="@+id/detailes_releaseDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    tools:text="August 3,2019" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp"
+                    android:text="Vote Average"
+                     />
+
+                <TextView
+                    android:id="@+id/detailes_voteAverage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    tools:text="6.65" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp"
+                    android:text="Overiew"
+                     />
+
+                <TextView
+                    android:id="@+id/detailes_overView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@string/overview"
+                      />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+</RelativeLayout>
