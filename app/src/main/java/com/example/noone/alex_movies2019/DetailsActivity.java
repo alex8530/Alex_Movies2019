@@ -1,6 +1,7 @@
 package com.example.noone.alex_movies2019;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import com.example.noone.alex_movies2019.model.Movie;
 import com.example.noone.alex_movies2019.model.MovieResponse;
 import com.example.noone.alex_movies2019.rest.ApiClient;
 import com.example.noone.alex_movies2019.rest.ApiInterface;
+import com.example.noone.alex_movies2019.utils.Connectivity;
 import com.example.noone.alex_movies2019.utils.Constant;
 import com.squareup.picasso.Picasso;
 
@@ -27,11 +29,12 @@ public class DetailsActivity extends AppCompatActivity {
     long idMovie;
     ApiInterface mApiInterface;
     ProgressDialog dialog;
+    Context mContext;
      @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-
+         mContext=this;
 
         //get intent
         Intent intent = getIntent();
@@ -60,7 +63,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     private void getDetails(long idMovie) {
 
-        if (Constant.isConnectedToInternet(getApplicationContext())) {
+        if (Connectivity.isConnected(mContext)&& Connectivity.isConnectedWifi(mContext)) {
             dialog = new ProgressDialog(DetailsActivity.this);
             dialog.setMessage("please wait .....");
             dialog.show();

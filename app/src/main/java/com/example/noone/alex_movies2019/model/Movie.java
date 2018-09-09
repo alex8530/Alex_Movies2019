@@ -12,6 +12,8 @@ import io.objectbox.annotation.Id;
 @Entity
 public class Movie {
 
+    private int type;
+
     @SerializedName("overview")
     private String overview;
 
@@ -34,13 +36,22 @@ public class Movie {
 
 
 
-    public Movie(String overview, String title, String posterPath, Double voteAvarage, String releaseDate, long id) {
+    public Movie(String overview, String title, String posterPath, Double voteAvarage, String releaseDate, long id, int type) {
         this.overview = overview;
         this.title = title;
         this.posterPath = posterPath;
         this.voteAvarage = voteAvarage;
         this.releaseDate = releaseDate;
         this.id = id;
+        this.type=type;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public String getOverview() {
@@ -94,7 +105,8 @@ public class Movie {
     @Override
     public String toString() {
         return "Movie{" +
-                "overview='" + overview + '\'' +
+                "type=" + type +
+                ", overview='" + overview + '\'' +
                 ", title='" + title + '\'' +
                 ", posterPath='" + posterPath + '\'' +
                 ", voteAvarage=" + voteAvarage +
@@ -102,7 +114,4 @@ public class Movie {
                 ", id=" + id +
                 '}';
     }
-
-
-
 }

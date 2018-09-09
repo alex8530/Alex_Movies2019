@@ -4,38 +4,6 @@
   "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
   "entities": [
     {
-      "id": "2:3245019164045013411",
-      "lastPropertyId": "13:780281427983950984",
-      "name": "MDV",
-      "properties": [
-        {
-          "id": "2:2212237159508852867",
-          "name": "title"
-        },
-        {
-          "id": "9:5455889618003625823",
-          "name": "overview"
-        },
-        {
-          "id": "10:3918609961581597359",
-          "name": "posterPath"
-        },
-        {
-          "id": "11:7298979304604559752",
-          "name": "vote_average"
-        },
-        {
-          "id": "12:1235395080234138138",
-          "name": "releaseDate"
-        },
-        {
-          "id": "13:780281427983950984",
-          "name": "id"
-        }
-      ],
-      "relations": []
-    },
-    {
       "id": "3:2774570959137603313",
       "lastPropertyId": "6:2784299663588783672",
       "name": "Movie",
@@ -75,7 +43,8 @@
   "modelVersion": 4,
   "modelVersionParserMinimum": 4,
   "retiredEntityUids": [
-    8792125752256764981
+    8792125752256764981,
+    3245019164045013411
   ],
   "retiredIndexUids": [],
   "retiredPropertyUids": [
@@ -94,7 +63,13 @@
     911067376182614103,
     5562322547348969124,
     4527346442265157716,
-    5793369706647391121
+    5793369706647391121,
+    2212237159508852867,
+    5455889618003625823,
+    3918609961581597359,
+    7298979304604559752,
+    1235395080234138138,
+    780281427983950984
   ],
   "retiredRelationUids": [],
   "version": 1
