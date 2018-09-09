@@ -1,5 +1,6 @@
-package com.example.noone.alex_movies2019.model;
+package com.example.noone.alex_movies2019.database.modelDb;
 
+import com.example.noone.alex_movies2019.model.Movie;
 import com.google.gson.annotations.SerializedName;
 
 import io.objectbox.annotation.Entity;
@@ -9,39 +10,24 @@ import io.objectbox.annotation.Id;
  * Created by NoOne on 9/8/2018.
  */
 
-
-public class Movie {
-
-
+@Entity
+public class MDV {
 
 
-    @SerializedName("overview")
-    private String overview;
-
-    @SerializedName("title")
-    private String title;
-
-    @SerializedName("poster_path")
-    private String posterPath;
-
-    @SerializedName("vote_average")
-    private Double voteAvarage;
-
-    @SerializedName("release_date")
-    private String releaseDate  ;
-
-
-    @SerializedName("id")
-    private Integer id ;
-
-    public Movie(  Integer id ,String overview, String title, String posterPath, Double voteAvarage, String releaseDate) {
-        this.overview = overview;
-        this.title = title;
-        this.posterPath = posterPath;
-        this.voteAvarage = voteAvarage;
-        this.releaseDate = releaseDate;
-        this.id = id;
+    public MDV(Movie movie) {
+        index=0;
+        this.overview = movie.getOverview();
+        this.title = movie.getTitle();
+        this.posterPath = movie.getPosterPath();
+        this.vote_average = movie.getVoteAvarage();
+        this.releaseDate = movie.getReleaseDate();
+        this.id = movie.getId();
     }
+
+
+
+
+
 
     public String getOverview() {
         return overview;
@@ -67,12 +53,12 @@ public class Movie {
         this.posterPath = posterPath;
     }
 
-    public Double getVoteAvarage() {
-        return voteAvarage;
+    public Double getVote_average() {
+        return vote_average;
     }
 
-    public void setVoteAvarage(Double voteAvarage) {
-        this.voteAvarage = voteAvarage;
+    public void setVote_average(Double vote_average) {
+        this.vote_average = vote_average;
     }
 
     public String getReleaseDate() {
@@ -91,15 +77,49 @@ public class Movie {
         this.id = id;
     }
 
+    public long getIndex() {
+        return index;
+    }
+
+    public void setIndex(long index) {
+        this.index = index;
+    }
+
+    private String overview;
+
+
+    private String title;
+
+
+    private String posterPath;
+
+    private Double vote_average;
+
+
+    private String releaseDate  ;
+
+
+    private Integer id ;
+
+
+    @Id
+    private long index ;
+
+
+
+
+
     @Override
     public String toString() {
-        return "Movie{" +
+        return "MDV{" +
                 "overview='" + overview + '\'' +
                 ", title='" + title + '\'' +
                 ", posterPath='" + posterPath + '\'' +
-                ", voteAvarage=" + voteAvarage +
+                ", vote_average=" + vote_average +
                 ", releaseDate='" + releaseDate + '\'' +
                 ", id=" + id +
                 '}';
     }
+
+
 }

@@ -58,8 +58,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewh
         //todo check if there is / or not !!!!
         String fullPath= Constant.BASE_IMAGE_URL+pathImage;
 
-        Log.e(TAG, "onBindViewHolder: "+fullPath );
-        Picasso.get().load(fullPath).into(holder.imageViewPoster);
+         Picasso.get().load(fullPath).into(holder.imageViewPoster);
 
     }
 

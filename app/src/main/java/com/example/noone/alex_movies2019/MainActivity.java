@@ -2,11 +2,9 @@ package com.example.noone.alex_movies2019;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -18,6 +16,7 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
 
 import com.example.noone.alex_movies2019.adapter.MoviesAdapter;
+import com.example.noone.alex_movies2019.database.modelDb.MDV;
 import com.example.noone.alex_movies2019.listener.ItemClickLitenerObject;
 import com.example.noone.alex_movies2019.model.Movie;
 import com.example.noone.alex_movies2019.model.MovieResponse;
@@ -25,9 +24,13 @@ import com.example.noone.alex_movies2019.rest.ApiClient;
 import com.example.noone.alex_movies2019.rest.ApiInterface;
 import com.example.noone.alex_movies2019.utils.Constant;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import io.objectbox.Box;
+import io.objectbox.android.AndroidScheduler;
+import io.objectbox.query.Query;
+import io.objectbox.reactive.DataObserver;
+import io.objectbox.reactive.DataSubscriptionList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,10 +42,28 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
     MoviesAdapter adapter;
     private static final String TAG = "TESTMainActivity";
       ProgressDialog dialog;
+    private DataSubscriptionList subscriptions = new DataSubscriptionList();
+
+
+    private Box<MDV> movieDbBox;
+    private Query<MDV> movieDbQuery;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+         movieDbBox =  ((App) getApplication()).getBoxStore().boxFor(MDV.class);
+         movieDbQuery=movieDbBox.query().build();
+
+        movieDbQuery.subscribe(subscriptions).on(AndroidScheduler.mainThread())
+                .observer(new DataObserver<List<MDV>>() {
+                    @Override
+                    public void onData(List<MDV> movies) {
+                        Log.e(TAG, "onData: "+movies.toString() );
+                    }
+                });
+
+
 
 
         //toolbar
@@ -204,6 +225,11 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
         int id= movie.getId();
         goToDetailesActivity(id);
 
+
+        MDV movieDb= new MDV(movie);
+//        movieDbBox.put(movieDb);
+        movieDbBox.put(movieDb);
+        Log.e(TAG, "onClickItenOblect: put"   );
 
     }
 
