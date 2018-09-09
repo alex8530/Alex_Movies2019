@@ -4,50 +4,47 @@
   "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
   "entities": [
     {
-      "id": "2:3245019164045013411",
-      "lastPropertyId": "13:780281427983950984",
-      "name": "MDV",
+      "id": "3:2774570959137603313",
+      "lastPropertyId": "6:2784299663588783672",
+      "name": "Movie",
       "properties": [
         {
-          "id": "2:2212237159508852867",
-          "name": "title"
-        },
-        {
-          "id": "7:5793369706647391121",
-          "name": "index"
-        },
-        {
-          "id": "9:5455889618003625823",
+          "id": "1:3985834218217744461",
           "name": "overview"
         },
         {
-          "id": "10:3918609961581597359",
+          "id": "2:6761150429721850321",
+          "name": "title"
+        },
+        {
+          "id": "3:3574939816344776591",
           "name": "posterPath"
         },
         {
-          "id": "11:7298979304604559752",
-          "name": "vote_average"
+          "id": "4:5826030183084245977",
+          "name": "voteAvarage"
         },
         {
-          "id": "12:1235395080234138138",
+          "id": "5:7785606853490358349",
           "name": "releaseDate"
         },
         {
-          "id": "13:780281427983950984",
+          "id": "6:2784299663588783672",
           "name": "id"
         }
       ],
       "relations": []
     }
   ],
-  "lastEntityId": "2:3245019164045013411",
+  "lastEntityId": "3:2774570959137603313",
   "lastIndexId": "0:0",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 4,
   "modelVersionParserMinimum": 4,
   "retiredEntityUids": [
-    8792125752256764981
+    8792125752256764981,
+    3245019164045013411
   ],
   "retiredIndexUids": [],
   "retiredPropertyUids": [
@@ -65,7 +62,14 @@
     6036311394912338146,
     911067376182614103,
     5562322547348969124,
-    4527346442265157716
+    4527346442265157716,
+    5793369706647391121,
+    2212237159508852867,
+    5455889618003625823,
+    3918609961581597359,
+    7298979304604559752,
+    1235395080234138138,
+    780281427983950984
   ],
   "retiredRelationUids": [],
   "version": 1

@@ -24,7 +24,7 @@ public class DetailsActivity extends AppCompatActivity {
     private static final String TAG = "TESTDetailsActivity";
     TextView details_title,details_releaseDate,details_voteAverage,details_overView;
     ImageView details_image;
-    int idMovie;
+    long idMovie;
     ApiInterface mApiInterface;
     ProgressDialog dialog;
      @Override
@@ -37,7 +37,7 @@ public class DetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent!=null){
             if (intent.hasExtra(Constant.MOVIE_ID)){
-                idMovie= intent.getIntExtra(Constant.MOVIE_ID,0);
+                idMovie= intent.getLongExtra(Constant.MOVIE_ID,0);
             }
         }
 
@@ -58,7 +58,7 @@ public class DetailsActivity extends AppCompatActivity {
         details_image=findViewById(R.id.details_image);
     }
 
-    private void getDetails(int idMovie) {
+    private void getDetails(long idMovie) {
 
         if (Constant.isConnectedToInternet(getApplicationContext())) {
             dialog = new ProgressDialog(DetailsActivity.this);

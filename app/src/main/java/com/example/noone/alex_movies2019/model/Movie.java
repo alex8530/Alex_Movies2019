@@ -9,11 +9,8 @@ import io.objectbox.annotation.Id;
  * Created by NoOne on 9/8/2018.
  */
 
-
+@Entity
 public class Movie {
-
-
-
 
     @SerializedName("overview")
     private String overview;
@@ -31,10 +28,13 @@ public class Movie {
     private String releaseDate  ;
 
 
+    @Id(assignable = true)
     @SerializedName("id")
-    private Integer id ;
+    private long id ;
 
-    public Movie(  Integer id ,String overview, String title, String posterPath, Double voteAvarage, String releaseDate) {
+
+
+    public Movie(String overview, String title, String posterPath, Double voteAvarage, String releaseDate, long id) {
         this.overview = overview;
         this.title = title;
         this.posterPath = posterPath;
@@ -83,11 +83,11 @@ public class Movie {
         this.releaseDate = releaseDate;
     }
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -102,4 +102,7 @@ public class Movie {
                 ", id=" + id +
                 '}';
     }
+
+
+
 }
