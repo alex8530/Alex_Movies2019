@@ -10,7 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.noone.alex_movies2019.R;
+import com.example.noone.alex_movies2019.listener.ItemClickLitenerObject;
 import com.example.noone.alex_movies2019.model.Movie;
+import com.example.noone.alex_movies2019.utils.Constant;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -23,11 +25,13 @@ import java.util.List;
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewholder> {
 
     private static final String TAG = "MoviesAdapter";
+    ItemClickLitenerObject mItemClickLitenerObject;
 
     Context mContext;
     List<Movie> moviesList;
 
-    public MoviesAdapter(Context context ) {
+    public MoviesAdapter(Context context , ItemClickLitenerObject mItemClickLitenerObject) {
+        this.mItemClickLitenerObject=mItemClickLitenerObject;
         this.mContext = context;
         notifyDataSetChanged();
 
@@ -52,7 +56,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewh
 
 
         //todo check if there is / or not !!!!
-        String fullPath="http://image.tmdb.org/t/p/w185/"+pathImage;
+        String fullPath= Constant.BASE_IMAGE_URL+pathImage;
 
         Log.e(TAG, "onBindViewHolder: "+fullPath );
         Picasso.get().load(fullPath).into(holder.imageViewPoster);
@@ -68,7 +72,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewh
 
 
 
-    public class MovieViewholder extends RecyclerView.ViewHolder{
+    public class MovieViewholder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         ImageView imageViewPoster;
         TextView tv_title;
@@ -77,8 +81,15 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewh
             super(itemView);
             imageViewPoster= itemView.findViewById(R.id.menu_image_Poster);
             tv_title = itemView.findViewById(R.id.menu_name);
+
+            itemView.setOnClickListener(this);
         }
 
 
+        @Override
+        public void onClick(View view) {
+            mItemClickLitenerObject.onClickItenOblect(getAdapterPosition());
+            mItemClickLitenerObject.onClickItenOblect(getAdapterPosition(),moviesList.get(getAdapterPosition()));
+        }
     }
 }

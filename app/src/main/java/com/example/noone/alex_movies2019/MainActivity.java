@@ -1,5 +1,6 @@
 package com.example.noone.alex_movies2019;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
 
 import com.example.noone.alex_movies2019.adapter.MoviesAdapter;
+import com.example.noone.alex_movies2019.listener.ItemClickLitenerObject;
 import com.example.noone.alex_movies2019.model.Movie;
 import com.example.noone.alex_movies2019.model.MovieResponse;
 import com.example.noone.alex_movies2019.rest.ApiClient;
@@ -30,12 +32,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ItemClickLitenerObject{
       RecyclerView recyclerView;
     ApiInterface mApiInterface;
     List<Movie> moviesList;
     MoviesAdapter adapter;
     private static final String TAG = "TESTMainActivity";
+      ProgressDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,25 +61,16 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutAnimation(animationController);
 
         //init adapter
-          adapter = new MoviesAdapter(this);
+          adapter = new MoviesAdapter(this,this);
 
-          //get getTopRatedMovies and set into recycle view
-         getTopRatedMovies();
 
-    }
 
-    private void makeSeplashScrean() {
-        final Handler handler=new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-//                startActivity(new Intent(this,Home_Layout.class));
-//                finish();
-            }
-        },3000);
+            //get getTopRatedMovies and set into recycle view
+        //by defult i will sort it on Top rated and put in the menu check=true on top rated
+            getTopRatedMovies();
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -91,14 +85,27 @@ public class MainActivity extends AppCompatActivity {
 
 
         if (itemId==R.id.menu_popularMovies){
-            getTopRatedMovies();
+            if (item.isChecked()){
+                item.setChecked(false);
+            }else {
+                item.setChecked(true);
+                getTopRatedMovies();
+            }
 
             return true;
         }
 
          if (itemId==R.id.menu_top_ratedMovies){
+             if (item.isChecked()){
+                 //No need to di this line because the checkbox in single group
+//                 item.setChecked(false);
 
-             getPopularMovies();
+             }else {
+//                 item.setChecked(true);
+                 getPopularMovies();
+             }
+
+
              return true;
         }
 
@@ -108,56 +115,108 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getPopularMovies() {
+        if (Constant.isConnectedToInternet(getApplicationContext())) {
+            dialog = new ProgressDialog(MainActivity.this);
+            dialog.setMessage("please wait .....");
+            dialog.show();
 
-        mApiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<MovieResponse> movieResponseCall =  mApiInterface.getPopularMovies(Constant.API_KEY);
-        movieResponseCall.enqueue(new Callback<MovieResponse>() {
-            @Override
-            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                Log.e(TAG, "onResponse: " + response.code() );
-                Log.e(TAG, "onResponse: "+response.body().getResults() );
 
-                moviesList = response.body().getResults();
-                adapter.setMoviesList(moviesList);
+            mApiInterface = ApiClient.getClient().create(ApiInterface.class);
+            Call<MovieResponse> movieResponseCall = mApiInterface.getPopularMovies(Constant.API_KEY);
+            movieResponseCall.enqueue(new Callback<MovieResponse>() {
+                @Override
+                public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                    Log.e(TAG, "onResponse: " + response.code());
+                    Log.e(TAG, "onResponse: " + response.body().getResults());
 
-                recyclerView.setAdapter(adapter);
-                recyclerView.scheduleLayoutAnimation();
+                    moviesList = response.body().getResults();
+                    adapter.setMoviesList(moviesList);
 
-            }
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.scheduleLayoutAnimation();
 
-            @Override
-            public void onFailure(Call<MovieResponse> call, Throwable t) {
+                    dialog.dismiss();
+                }
 
-                Log.e(TAG, "onFailure: "+ t.getMessage() );
-            }
-        });
+                @Override
+                public void onFailure(Call<MovieResponse> call, Throwable t) {
+                    dialog.dismiss();
+                    Log.e(TAG, "onFailure: " + t.getMessage());
+                }
+            });
+
+
+        }else {
+        Toast.makeText(this, "No Internet !", Toast.LENGTH_SHORT).show();
+
+        }
     }
 
     public void getTopRatedMovies(){
-        mApiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<MovieResponse> movieResponseCall =  mApiInterface.getTopRatedMovies(Constant.API_KEY);
-        movieResponseCall.enqueue(new Callback<MovieResponse>() {
-            @Override
-            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                Log.e(TAG, "onResponse: " + response.code() );
-                Log.e(TAG, "onResponse: "+response.body().getResults() );
+        if (Constant.isConnectedToInternet(getApplicationContext())) {
+            dialog = new ProgressDialog(MainActivity.this);
+            dialog.setMessage("please wait .....");
+            dialog.show();
 
-                moviesList = response.body().getResults();
-                adapter.setMoviesList(moviesList);
 
-                recyclerView.setAdapter(adapter);
-                recyclerView.scheduleLayoutAnimation();
+            mApiInterface = ApiClient.getClient().create(ApiInterface.class);
+            Call<MovieResponse> movieResponseCall = mApiInterface.getTopRatedMovies(Constant.API_KEY);
+            movieResponseCall.enqueue(new Callback<MovieResponse>() {
+                @Override
+                public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
 
-            }
+                    Log.e(TAG, "onResponse: " + response.code());
+                    Log.e(TAG, "onResponse: " + response.body().getResults());
 
-            @Override
-            public void onFailure(Call<MovieResponse> call, Throwable t) {
+                    moviesList = response.body().getResults();
+                    adapter.setMoviesList(moviesList);
 
-                Log.e(TAG, "onFailure: "+ t.getMessage() );
-            }
-        });
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.scheduleLayoutAnimation();
+
+                    dialog.dismiss();
+
+                }
+
+                @Override
+                public void onFailure(Call<MovieResponse> call, Throwable t) {
+
+                    dialog.dismiss();
+                    Log.e(TAG, "onFailure: " + t.getMessage());
+                }
+            });
+
+        }else {
+            Toast.makeText(this, "No Internet !", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
+    @Override
+    public void onClickItenOblect(int position, Movie movie) {
+//        Toast.makeText(this, ""+movie.getTitle(), Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onClickItenOblect(int position) {
+        Movie movie= moviesList.get(position);
+        int id= movie.getId();
+        goToDetailesActivity(id);
+
+
+    }
+
+    private void goToDetailesActivity(int id) {
+        Intent intent= new Intent(this,DetailsActivity.class);
+        intent.putExtra(Constant.MOVIE_ID,id);
+
+        if (Constant.isConnectedToInternet(this)){
+            startActivity(intent);
+
+        }else {
+            Toast.makeText(this, "Check Your Network !!", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
 //todo  set backgraound and scplash screen

@@ -1,5 +1,6 @@
 package com.example.noone.alex_movies2019.rest;
 
+import com.example.noone.alex_movies2019.model.Movie;
 import com.example.noone.alex_movies2019.model.MovieResponse;
 
 import retrofit2.Call;
@@ -21,5 +22,5 @@ public interface ApiInterface {
 
 
     @GET("movie/{id}")
-    Call<MovieResponse> getMovieDetails(@Path("id") int id, @Query("api_key") String apiKey);
+    Call<Movie> getMovieDetails(@Path("id") int id, @Query("api_key") String apiKey);
 }
