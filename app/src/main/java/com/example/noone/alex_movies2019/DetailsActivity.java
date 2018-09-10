@@ -18,14 +18,21 @@ import com.example.noone.alex_movies2019.utils.Connectivity;
 import com.example.noone.alex_movies2019.utils.Constant;
 import com.squareup.picasso.Picasso;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class DetailsActivity extends AppCompatActivity {
     private static final String TAG = "TESTDetailsActivity";
-    TextView details_title,details_releaseDate,details_voteAverage,details_overView;
-    ImageView details_image;
+
+    @BindView(R.id.details_title) TextView details_title;
+    @BindView(R.id.details_releaseDate) TextView details_releaseDate;
+    @BindView(R.id.details_voteAverage) TextView details_voteAverage;
+    @BindView(R.id.details_overView) TextView  details_overView;
+    @BindView(R.id.details_image)ImageView details_image;
+
     long idMovie;
     ApiInterface mApiInterface;
     ProgressDialog dialog;
@@ -35,6 +42,7 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
          mContext=this;
+         ButterKnife.bind(this);
 
         //get intent
         Intent intent = getIntent();
@@ -44,22 +52,12 @@ public class DetailsActivity extends AppCompatActivity {
             }
         }
 
-        initUi();
-
-
         //getDetails from api
         getDetails(idMovie);
 
 
     }
 
-    private void initUi() {
-        details_title =findViewById(R.id.details_title);
-        details_releaseDate =findViewById(R.id.details_releaseDate);
-        details_voteAverage =findViewById(R.id.details_voteAverage);
-        details_overView =findViewById(R.id.details_overView);
-        details_image=findViewById(R.id.details_image);
-    }
 
     private void getDetails(long idMovie) {
 

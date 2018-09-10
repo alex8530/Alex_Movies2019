@@ -29,6 +29,8 @@ import com.example.noone.alex_movies2019.utils.Constant;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.objectbox.Box;
 import io.objectbox.android.AndroidScheduler;
 import io.objectbox.query.Query;
@@ -39,7 +41,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements ItemClickLitenerObject{
-      RecyclerView recyclerView;
+
+    @BindView(R.id.rcycleView) RecyclerView recyclerView;
     ApiInterface mApiInterface;
     List<Movie> moviesList;
 
@@ -67,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext=this;
+        ButterKnife.bind(this);
 
 
 
@@ -115,8 +119,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
         setSupportActionBar(toolbar);
 
 
-        //init recycleView
-        recyclerView =   findViewById(R.id.rcycleView);
+
 //        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setLayoutManager(new GridLayoutManager(this,2));
         recyclerView.setHasFixedSize(true);
@@ -428,4 +431,4 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
     }
 
 }
-//todo  set backgraound and scplash screen
+//todo  set backgraound

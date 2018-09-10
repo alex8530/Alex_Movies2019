@@ -18,6 +18,9 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by NoOne on 9/8/2018.
  */
@@ -34,6 +37,12 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewh
         this.mItemClickLitenerObject=mItemClickLitenerObject;
         this.mContext = context;
         notifyDataSetChanged();
+
+    }
+
+
+    void setInterfave(ItemClickLitenerObject mItemClickLitenerObject){
+        this.mItemClickLitenerObject=mItemClickLitenerObject;
 
     }
     public void setMoviesList(List<Movie> moviesList){
@@ -73,14 +82,16 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewh
 
     public class MovieViewholder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
+        @BindView(R.id.menu_image_Poster)
         ImageView imageViewPoster;
+        @BindView(R.id.menu_name)
         TextView tv_title;
 
-        public MovieViewholder(View itemView) {
-            super(itemView);
-            imageViewPoster= itemView.findViewById(R.id.menu_image_Poster);
-            tv_title = itemView.findViewById(R.id.menu_name);
 
+
+        public MovieViewholder(View itemView) {
+             super(itemView);
+            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
 
