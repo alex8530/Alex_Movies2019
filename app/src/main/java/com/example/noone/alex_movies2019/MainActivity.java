@@ -52,16 +52,18 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
     private DataSubscriptionList subscriptions = new DataSubscriptionList();
 
 
-    private Box<Movie> movieDbBox;
-    private Query<Movie> movieQuery;
+    private Box<Movie> topRateDbBox;
+    private Box<Movie> popularDbBox;
+
+//    private Query<Movie> movieQuery;
 
 
 
     Context mContext;
-    List<Movie> moviesListCash = new ArrayList<>();
+//    List<Movie> moviesListCash = new ArrayList<>();
 
-    ArrayList<Movie> listTopMovies= new ArrayList<>();
-    ArrayList<Movie> listPopularMovies= new ArrayList<>();
+//    ArrayList<Movie> listTopMovies= new ArrayList<>();
+//    ArrayList<Movie> listPopularMovies= new ArrayList<>();
 
     boolean firstTimeTopMovies;
     boolean firstTimePopularMovies;
@@ -74,44 +76,51 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
 
 
 
-        movieDbBox =  ((App) getApplication()).getBoxStore().boxFor(Movie.class);
-        movieQuery=movieDbBox.query().build();
+        topRateDbBox =  ((App) getApplication()).getBoxStore().boxFor(Movie.class);
+        popularDbBox =  ((App) getApplication()).getBoxStore().boxFor(Movie.class);
+//        movieQuery=movieDbBox.query().build();
+//
+//
+//        movieQuery.subscribe(subscriptions).on(AndroidScheduler.mainThread())
+//                .observer(new DataObserver<List<Movie>>() {
+//                    @Override
+//                    public void onData(List<Movie> movies) {
+//
+//
+//                        for (Movie mdv : movies) {
+//                            if (mdv.getType() ==1) {
+//                                listTopMovies.add(mdv);
+//                                Log.e(TAG, "onData: TopMovies add   run!!!!!"  );
+//                            }
+//                            else if(mdv.getType() == 0) {
+//                                Log.e(TAG, "onData: PopularMovies   run!!!!!"  );
+//                                listPopularMovies.add(mdv);
+//                            }
+//                         }
+//                    }
+//                });
 
 
-        movieQuery.subscribe(subscriptions).on(AndroidScheduler.mainThread())
-                .observer(new DataObserver<List<Movie>>() {
-                    @Override
-                    public void onData(List<Movie> movies) {
-
-
-                        for (Movie mdv : movies) {
-                            if (mdv.getType() ==1) {
-                                listTopMovies.add(mdv);
-                            }
-                            else if(mdv.getType() == 0) {
-                                listPopularMovies.add(mdv);
-                            }
-//                            Log.e(TAG, "onDataaaaaaaaaaa: " + listTopMovies.toString() + "\n");
-//                            Log.e(TAG, "onDataaaaaaaaaaa: " + listPopularMovies.toString() + "\n");
-
-
-                        }
-                    }
-                });
 
 
 
+        //check if this time is not the first time to login to this app
+        //but check befor that if there is no network connection , because we need to get data from database if there is no internt
 
-        moviesListCash=getTopRatedFromDatabase();
+        if (!Connectivity.isConnected(mContext)|| !Connectivity.isConnectedWifi(mContext)) {
+            if (getTopRatedFromDatabase()!= null){
+                if (getTopRatedFromDatabase().isEmpty()){
+                    //the list is  empty
+                    Log.e(TAG, "onCreate:list is empty and  null  and it is first time"  );
+                    firstTimeTopMovies=true;
 
-        if (moviesListCash==null){
-            //the list is  empty
-            Log.e(TAG, "onCreate:list is empty and  null  and it is first time"  );
-            firstTimeTopMovies=true;
-
-        }else {
-            firstTimeTopMovies=false;
+                }else {
+                    firstTimeTopMovies=false;
+                }
+            }
         }
+
+
 
 
         //toolbar
@@ -199,8 +208,8 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
             movieResponseCall.enqueue(new Callback<MovieResponse>() {
                 @Override
                 public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-//                    Log.e(TAG, "onResponse: " + response.code());
-//                    Log.e(TAG, "onResponse: " + response.body().getResults());
+//
+
 
                     moviesList = response.body().getResults();
                     adapter.setMoviesList(moviesList);
@@ -210,11 +219,8 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
                     adapter.notifyDataSetChanged();
 
 
-                    //cash in database
-                    for (Movie movie : moviesList){
-                        movie.getId();
-                    }
-                    removePopularToDatabase();
+
+//                    removePopularToDatabase();
                     savePopularToDatabase(moviesList);
 
                     dialog.dismiss();
@@ -230,33 +236,43 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
 
         }else {
 
-             moviesListCash= getPopularFromDatabase();
-            if (moviesListCash==null){
-                //the list is  empty
-                Log.e(TAG, "onCreate:list is empty and  null  and it is first time"  );
-                firstTimePopularMovies=true;
+            if (getPopularFromDatabase()!=null){
+                if (getPopularFromDatabase().isEmpty()){
+                    //the list is  empty
+                    Log.e(TAG, "onCreate:list is empty and  null  and it is first time"  );
+                    firstTimePopularMovies=true;
 
+                }else {
+                    firstTimePopularMovies=false;
+                }
+
+
+                if (firstTimePopularMovies){
+
+                    //mean that the list is empty and no data in there
+                    Toast.makeText(MainActivity.this, "No Internet ! and No local database STORE", Toast.LENGTH_LONG).show();
+
+                }else {
+                    //mean that there are data in list and can be retraive from it
+                    Toast.makeText(MainActivity.this, "No Internet ! ,, will loaded Popular Movies from local Database", Toast.LENGTH_LONG).show();
+                    adapter.setMoviesList(getPopularFromDatabase());
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.scheduleLayoutAnimation();
+                    adapter.notifyDataSetChanged();
+
+
+
+                }
             }else {
-                firstTimePopularMovies=false;
-            }
-
-
-
-
-            if (firstTimePopularMovies){
-
-                //mean that the list is empty and no data in there
                 Toast.makeText(MainActivity.this, "No Internet ! and No local database STORE", Toast.LENGTH_LONG).show();
 
-            }else {
-                //mean that there are data in list and can be retraive from it
-                Toast.makeText(MainActivity.this, "No Internet ! ,, will loaded Popular Movies from local Database", Toast.LENGTH_LONG).show();
-                 adapter.setMoviesList(moviesListCash);
-                recyclerView.setAdapter(adapter);
-                recyclerView.scheduleLayoutAnimation();
-                adapter.notifyDataSetChanged();
-
             }
+
+
+
+
+
+
 
         }
     }
@@ -278,15 +294,11 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
                 @Override
                 public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
 
-                  //  Log.e(TAG, "onResponse: " + response.code());
-                  //  Log.e(TAG, "onResponse: " + response.body().getResults());
-
                     moviesList = response.body().getResults();
                     adapter.setMoviesList(moviesList);
 
                     //save to local database
-
-                    removeTopRatedToDatabase();
+//                    removeTopRatedToDatabase();
                     saveTopRatedToDatabase(moviesList);
 
                     recyclerView.setAdapter(adapter);
@@ -307,30 +319,35 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
 
         }else {
 
-            moviesListCash=getTopRatedFromDatabase();
-            if (moviesListCash==null){
-                //the list is  empty
-                Log.e(TAG, "onCreate:list is empty and  null  and it is first time"  );
-                firstTimeTopMovies=true;
+             if (getTopRatedFromDatabase()!=null){
 
+                if (getTopRatedFromDatabase().isEmpty()){
+                    //the list is  empty
+                    Log.e(TAG, "onCreate:list is empty and  null  and it is first time"  );
+                    firstTimeTopMovies=true;
+
+                }else {
+                    firstTimeTopMovies=false;
+                }
+
+                 if (firstTimeTopMovies){
+                     Toast.makeText(MainActivity.this, "No Internet ! and No local database STORE", Toast.LENGTH_LONG).show();
+
+                 }else {
+                     Toast.makeText(MainActivity.this, "No Internet ! ,, will load Top Movies from local database", Toast.LENGTH_LONG).show();
+
+                     adapter.setMoviesList(getTopRatedFromDatabase());
+                     recyclerView.setAdapter(adapter);
+                     recyclerView.scheduleLayoutAnimation();
+                     adapter.notifyDataSetChanged();
+                 }
             }else {
-                firstTimeTopMovies=false;
-            }
+                 Toast.makeText(MainActivity.this, "No Internet ! and No local database STORE", Toast.LENGTH_LONG).show();
 
-
-
-            if (firstTimeTopMovies){
-                Toast.makeText(MainActivity.this, "No Internet ! and No local database STORE", Toast.LENGTH_LONG).show();
-
-            }else {
-
-
-                Toast.makeText(MainActivity.this, "No Internet ! ,, will load Top Movies from local database", Toast.LENGTH_LONG).show();
-                 adapter.setMoviesList(moviesListCash);
-                recyclerView.setAdapter(adapter);
-                 recyclerView.scheduleLayoutAnimation();
-                 adapter.notifyDataSetChanged();
              }
+
+
+
         }
     }
 
@@ -358,15 +375,15 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
         }
 
         Log.e(TAG, "savePopularToDatabase: "+list.toString() );
-        movieDbBox.put(list);
+        popularDbBox.put(list);
         Log.e(TAG, "savePopularToDatabase: sucessfully"  );
     }
     private List<Movie> getPopularFromDatabase() {
-        if ( movieDbBox.count()!=0){
+        if ( popularDbBox.count()!=0){
             Log.e(TAG, "getPopularFromDatabase:    found data sucessfull from local database !!_!! ");
-//            List<Movie> list= movieDbBox.query().equal(Movie_.type,0).build().find();
-            Log.e(TAG, "getPopularFromDatabase: "+   listPopularMovies.toString());
-            return listPopularMovies;
+            List<Movie> movieList =  popularDbBox.query().equal(Movie_.type,0).build().find();
+            Log.e(TAG, "popularDbBox: "+popularDbBox.getAll().toString() );
+            return movieList;
         }else {
             Log.e(TAG, "getPopularFromDatabase:  empty"  );
             return null;
@@ -377,8 +394,8 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
     private void removePopularToDatabase() {
         Log.e(TAG, "removePopularToDatabase: remove alod data sycessfully"  );
 
-        movieDbBox.remove(listPopularMovies);
-    }
+//        popularDbBox.removeAll();
+     }
 
 
 
@@ -391,18 +408,41 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
 
         }
 
-        movieDbBox.put(list);
+        Log.e(TAG, "saveTopRatedToDatabase: list : "+ list.toString() );
+         topRateDbBox.put(list);
         Log.e(TAG, "saveTopRatedToDatabase: sucessfully"  );
     }
+//    private List<Movie> getTopRatedFromDatabase() {
+//
+////        listTopMovies.clear();
+//
+//        if ( movieDbBox.count()!=0){
+//            Log.e(TAG, "getTopRatedFromDatabase:    found data sucessfull from local database !!_!! ");
+////             Log.e(TAG, "getTopRatedFromDatabase:"+movieDbBox.getAll().toString());
+//            List<Movie> movieList =  movieDbBox.query().equal(Movie_.type,1).build().find();
+//            Log.e(TAG, " getTopRatedFromDatabase: After qeury"+movieList );
+//            return listTopMovies;
+//        }else {
+//            Log.e(TAG, "getTopRatedFromDatabase:  empty"  );
+//            return null;
+//        }
+//
+//    }
+
+//    private void removeTopRatedToDatabase() {
+//        Log.e(TAG, "removeTopRatedToDatabase: remove alod data sycessfully"  );
+//        movieDbBox.remove(listTopMovies);
+//        listTopMovies.clear();//remove current data also
+//        Log.e(TAG, "listTopMovies after clear !!: " +listTopMovies.toString() );
+//    }
+
     private List<Movie> getTopRatedFromDatabase() {
 
-
-        if ( movieDbBox.count()!=0){
+        if ( topRateDbBox.count()!=0){
             Log.e(TAG, "getTopRatedFromDatabase:    found data sucessfull from local database !!_!! ");
-//            Log.e(TAG, "getTopRatedFromDatabase:"+ topRatedMovieDbBox.getAll());
-//            return topRatedMovieDbBox.getAll();
-            Log.e(TAG, "getTopRatedFromDatabase:"+listTopMovies.toString());
-            return listTopMovies;
+             List<Movie> movieList =  topRateDbBox.query().equal(Movie_.type,1).build().find();
+            Log.e(TAG, " getTopRatedFromDatabase: After qeury"+movieList );
+            return movieList;
         }else {
             Log.e(TAG, "getTopRatedFromDatabase:  empty"  );
             return null;
@@ -412,8 +452,9 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
 
     private void removeTopRatedToDatabase() {
         Log.e(TAG, "removeTopRatedToDatabase: remove alod data sycessfully"  );
-        movieDbBox.remove(listTopMovies);
-    }
+         topRateDbBox.removeAll();
+     }
+
 
 
 
