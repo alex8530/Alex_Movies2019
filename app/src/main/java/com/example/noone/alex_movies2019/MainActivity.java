@@ -55,15 +55,8 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
     private Box<Movie> topRateDbBox;
     private Box<Movie> popularDbBox;
 
-//    private Query<Movie> movieQuery;
-
-
-
     Context mContext;
-//    List<Movie> moviesListCash = new ArrayList<>();
 
-//    ArrayList<Movie> listTopMovies= new ArrayList<>();
-//    ArrayList<Movie> listPopularMovies= new ArrayList<>();
 
     boolean firstTimeTopMovies;
     boolean firstTimePopularMovies;
@@ -269,11 +262,6 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
             }
 
 
-
-
-
-
-
         }
     }
 
@@ -412,29 +400,8 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
          topRateDbBox.put(list);
         Log.e(TAG, "saveTopRatedToDatabase: sucessfully"  );
     }
-//    private List<Movie> getTopRatedFromDatabase() {
-//
-////        listTopMovies.clear();
-//
-//        if ( movieDbBox.count()!=0){
-//            Log.e(TAG, "getTopRatedFromDatabase:    found data sucessfull from local database !!_!! ");
-////             Log.e(TAG, "getTopRatedFromDatabase:"+movieDbBox.getAll().toString());
-//            List<Movie> movieList =  movieDbBox.query().equal(Movie_.type,1).build().find();
-//            Log.e(TAG, " getTopRatedFromDatabase: After qeury"+movieList );
-//            return listTopMovies;
-//        }else {
-//            Log.e(TAG, "getTopRatedFromDatabase:  empty"  );
-//            return null;
-//        }
-//
-//    }
 
-//    private void removeTopRatedToDatabase() {
-//        Log.e(TAG, "removeTopRatedToDatabase: remove alod data sycessfully"  );
-//        movieDbBox.remove(listTopMovies);
-//        listTopMovies.clear();//remove current data also
-//        Log.e(TAG, "listTopMovies after clear !!: " +listTopMovies.toString() );
-//    }
+
 
     private List<Movie> getTopRatedFromDatabase() {
 

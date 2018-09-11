@@ -17,7 +17,7 @@
         <ImageView
             android:id="@+id/menu_image_Poster"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="300dp"
             android:background="@mipmap/ic_launcher"
             android:scaleType="fitXY" />
 
