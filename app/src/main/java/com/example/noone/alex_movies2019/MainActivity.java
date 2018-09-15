@@ -349,9 +349,16 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
 
     @Override
     public void onClickItenOblect(int position) {
-        Movie movie= moviesList.get(position);
-        long id= movie.getId();
-        goToDetailesActivity(id);
+        if (Connectivity.isConnected(mContext)&& Connectivity.isConnectedWifi(mContext)){
+
+            Movie movie= moviesList.get(position);
+            long id= movie.getId();
+            goToDetailesActivity(id);
+
+
+        }else {
+            Toast.makeText(mContext, "No Internet", Toast.LENGTH_SHORT).show();
+        }
 
     }
 

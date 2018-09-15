@@ -34,7 +34,8 @@ public class Movie {
     @SerializedName("id")
     private long id ;
 
-
+    public Movie() {
+    }
 
     public Movie(String overview, String title, String posterPath, Double voteAvarage, String releaseDate, long id, int type) {
         this.overview = overview;
