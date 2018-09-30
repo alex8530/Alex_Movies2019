@@ -6,27 +6,15 @@ import android.util.Log;
 
 import com.example.noone.alex_movies2019.model.*;
 
-import io.objectbox.Box;
 import com.example.noone.alex_movies2019.model.Movie;
-import io.objectbox.BoxStore;
-import io.objectbox.android.AndroidObjectBrowser;
+
 
 
 public class App extends Application {
-    private BoxStore boxStore;
-    @Override
+     @Override
     public void onCreate() {
         super.onCreate();
-
-        boxStore =  MyObjectBox.builder().androidContext(App.this).build();
-        if (BuildConfig.DEBUG) {
-            new AndroidObjectBrowser(boxStore).start(this);
-        }
-
-        Log.d("App", "Using ObjectBox " + BoxStore.getVersion() + " (" + BoxStore.getVersionNative() + ")");
-    }
-
-    public BoxStore getBoxStore() {
-        return boxStore;
      }
+
+
 }

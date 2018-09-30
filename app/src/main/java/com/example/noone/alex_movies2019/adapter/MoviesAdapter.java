@@ -98,8 +98,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewh
 
         @Override
         public void onClick(View view) {
-            mItemClickLitenerObject.onClickItenOblect(getAdapterPosition());
-            mItemClickLitenerObject.onClickItenOblect(getAdapterPosition(),moviesList.get(getAdapterPosition()));
-        }
+            mItemClickLitenerObject.onClickItemObject(getAdapterPosition());
+         }
     }
 }

@@ -7,6 +7,5 @@ import com.example.noone.alex_movies2019.model.Movie;
  */
 
 public interface ItemClickLitenerObject {
-    void onClickItenOblect(int position, Movie movie);
-    void onClickItenOblect(int position);
+     void onClickItemObject(int position);
 }

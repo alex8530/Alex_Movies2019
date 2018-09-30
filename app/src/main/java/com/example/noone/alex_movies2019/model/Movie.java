@@ -1,15 +1,17 @@
 package com.example.noone.alex_movies2019.model;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
-import io.objectbox.annotation.Entity;
-import io.objectbox.annotation.Id;
 
 /**
  * Created by NoOne on 9/8/2018.
  */
 
-@Entity
+@Entity(tableName = "movie")
 public class Movie {
 
     private int type;
@@ -27,24 +29,32 @@ public class Movie {
     private Double voteAvarage;
 
     @SerializedName("release_date")
-    private String releaseDate  ;
+    private String releaseDate;
 
 
-    @Id(assignable = true)
     @SerializedName("id")
-    private long id ;
+    @PrimaryKey(autoGenerate = true)
+    private long id;
 
-    public Movie() {
+    @Ignore
+    public Movie(  String overview, String title, String posterPath, Double voteAvarage, String releaseDate, int type) {
+        this.overview = overview;
+        this.title = title;
+        this.posterPath = posterPath;
+        this.voteAvarage = voteAvarage;
+        this.releaseDate = releaseDate;
+
+        this.type = type;
     }
 
-    public Movie(String overview, String title, String posterPath, Double voteAvarage, String releaseDate, long id, int type) {
+    public Movie(long id, String overview, String title, String posterPath, Double voteAvarage, String releaseDate, int type) {
         this.overview = overview;
         this.title = title;
         this.posterPath = posterPath;
         this.voteAvarage = voteAvarage;
         this.releaseDate = releaseDate;
         this.id = id;
-        this.type=type;
+        this.type = type;
     }
 
     public int getType() {

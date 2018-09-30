@@ -21,7 +21,7 @@ public class MovieResponse {
     @SerializedName("total_pages")
     private int total_pages;
 
-    @SerializedName("results")
+        @SerializedName("results")
     private List<Movie> results;
 
 
