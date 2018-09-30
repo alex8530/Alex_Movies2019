@@ -14,6 +14,7 @@ import com.google.gson.annotations.SerializedName;
 @Entity(tableName = "movie")
 public class Movie {
 
+
     private int type;
 
     @SerializedName("overview")
@@ -33,21 +34,24 @@ public class Movie {
 
 
     @SerializedName("id")
-    @PrimaryKey(autoGenerate = true)
     private long id;
 
+    @PrimaryKey(autoGenerate = true)
+    private long idDB;
+
     @Ignore
-    public Movie(  String overview, String title, String posterPath, Double voteAvarage, String releaseDate, int type) {
+    public Movie( long id , String overview, String title, String posterPath, Double voteAvarage, String releaseDate, int type) {
         this.overview = overview;
         this.title = title;
         this.posterPath = posterPath;
         this.voteAvarage = voteAvarage;
         this.releaseDate = releaseDate;
-
+        this.id=id;
         this.type = type;
     }
 
-    public Movie(long id, String overview, String title, String posterPath, Double voteAvarage, String releaseDate, int type) {
+    public Movie( long idDB,long id,String overview, String title, String posterPath, Double voteAvarage, String releaseDate, int type) {
+        this.idDB=idDB;
         this.overview = overview;
         this.title = title;
         this.posterPath = posterPath;
@@ -113,6 +117,14 @@ public class Movie {
         this.id = id;
     }
 
+    public long getIdDB() {
+        return idDB;
+    }
+
+    public void setIdDB(long idDB) {
+        this.idDB = idDB;
+    }
+
     @Override
     public String toString() {
         return "Movie{" +
@@ -123,6 +135,7 @@ public class Movie {
                 ", voteAvarage=" + voteAvarage +
                 ", releaseDate='" + releaseDate + '\'' +
                 ", id=" + id +
+                ", idDB=" + idDB +
                 '}';
     }
 }

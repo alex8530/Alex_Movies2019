@@ -44,5 +44,5 @@ public interface MovieDao {
     void deleteMovie(Movie movie);
 
     @Query("select * from movie where id = :id")
-    LiveData<Movie> findMovieById(int id);
+    LiveData<Movie> findMovieById(long id);
 }

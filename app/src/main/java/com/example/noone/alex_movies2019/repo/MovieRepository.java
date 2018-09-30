@@ -1,5 +1,6 @@
 package com.example.noone.alex_movies2019.repo;
 
+import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,9 +8,12 @@ import android.util.Log;
 
 import com.example.noone.alex_movies2019.AppExecutors;
 import com.example.noone.alex_movies2019.daos.MovieDao;
+import com.example.noone.alex_movies2019.database.AppDatabase;
 import com.example.noone.alex_movies2019.model.Movie;
 import com.example.noone.alex_movies2019.model.MovieResponse;
+import com.example.noone.alex_movies2019.rest.ApiClient;
 import com.example.noone.alex_movies2019.rest.ApiInterface;
+import com.example.noone.alex_movies2019.utils.Connectivity;
 import com.example.noone.alex_movies2019.utils.Constant;
 
 import java.util.ArrayList;
@@ -34,12 +38,22 @@ public class MovieRepository {
 
     private static final String TAG = "TESTMovieRepository";
 
-    @Inject
-    public MovieRepository(MovieDao movieDao, ApiInterface apiInterface) {
-        this.apiInterface = apiInterface;
-        this.movieDao = movieDao;
+//    @Inject
+//    public MovieRepository(MovieDao movieDao, ApiInterface apiInterface) {
+//        this.apiInterface = apiInterface;
+//        this.movieDao = movieDao;
+//
+//    }
+   @Inject
+    public MovieRepository(Application application) {
+
+       AppDatabase appDatabase = AppDatabase.getInstance(application);
+       movieDao= appDatabase.movieDao();
+       apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
 
     }
+
 
     public LiveData<Resource<List<Movie>>> loadPopularMovies() {
         return new NetworkBoundResource<List<Movie>, MovieResponse>() {
@@ -134,6 +148,7 @@ public class MovieRepository {
             @Override
             protected Call<MovieResponse> createCall() {
                 Log.d(TAG, "createCall:  TopRatedMovies");
+
                 return apiInterface.getTopRatedMovies(Constant.API_KEY);
             }
 
@@ -144,5 +159,10 @@ public class MovieRepository {
         }.getAsLiveData();
     }
 
+    public LiveData<Movie> getMovieLiveData(long movie_id) {
+        //get from local database
+        return movieDao.findMovieById(movie_id );
 
+    }
+//
 }

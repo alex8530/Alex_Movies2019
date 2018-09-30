@@ -36,7 +36,7 @@ public class MainViewModel extends AndroidViewModel {
         MovieDao movieDao = appDatabase.movieDao();
         ApiInterface mApiInterface = ApiClient.getClient().create(ApiInterface.class);
 
-        repository = new MovieRepository(movieDao, mApiInterface);
+        repository = new MovieRepository(application);
 
     }
 

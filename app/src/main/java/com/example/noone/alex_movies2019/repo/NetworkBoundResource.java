@@ -22,7 +22,6 @@ import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
-import android.util.Log;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -80,6 +79,7 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
                 result.addSource(loadFromDb(), newData -> result.setValue(Resource.success(newData)));
             }
         }.execute();
+
     }
 
     @WorkerThread

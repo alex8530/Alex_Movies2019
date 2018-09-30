@@ -31,6 +31,9 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewh
     ItemClickLitenerObject mItemClickLitenerObject;
 
     Context mContext;
+
+
+
     List<Movie> moviesList;
 
     public MoviesAdapter(Context context , ItemClickLitenerObject mItemClickLitenerObject) {
@@ -71,6 +74,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewh
 
     }
 
+
+    public List<Movie> getMoviesList() {
+        return moviesList;
+    }
 
 
     @Override

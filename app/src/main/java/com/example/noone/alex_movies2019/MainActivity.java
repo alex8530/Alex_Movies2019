@@ -50,8 +50,6 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
 
     @BindView(R.id.rcycleView)
     RecyclerView recyclerView;
-    List<Movie> moviesList;
-
     MoviesAdapter adapter;
     private static final String TAG = "TESTMainActivity";
     ProgressDialog dialog;
@@ -345,16 +343,17 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
 
     @Override
     public void onClickItemObject(int position) {
-        if (Connectivity.isConnected(mContext) && Connectivity.isConnectedWifi(mContext)) {
+//        if (Connectivity.isConnected(mContext) && Connectivity.isConnectedWifi(mContext)) {
 
-            Movie movie = moviesList.get(position);
+            Movie movie = adapter.getMoviesList().get(position);
             long id = movie.getId();
+            Log.d(TAG, "onClickItemObject: ");
             goToDetailesActivity(id);
 
 
-        } else {
-            Toast.makeText(mContext, "No Internet", Toast.LENGTH_SHORT).show();
-        }
+//        } else {
+//            Toast.makeText(mContext, "No Internet", Toast.LENGTH_SHORT).show();
+//        }
 
     }
 
@@ -414,15 +413,16 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
 
 
     private void goToDetailesActivity(long id) {
+        Log.d(TAG, "goToDetailesActivity: ");
         Intent intent = new Intent(this, DetailsActivity.class);
         intent.putExtra(Constant.MOVIE_ID, id);
 
-        if (Connectivity.isConnected(mContext) && Connectivity.isConnectedWifi(mContext)) {
+//        if (Connectivity.isConnected(mContext) && Connectivity.isConnectedWifi(mContext)) {
             startActivity(intent);
 
-        } else {
-            Toast.makeText(this, "Check Your Network !!", Toast.LENGTH_SHORT).show();
-        }
+//        } else {
+//            Toast.makeText(this, "Check Your Network !!", Toast.LENGTH_SHORT).show();
+//        }
     }
 
     @Override
