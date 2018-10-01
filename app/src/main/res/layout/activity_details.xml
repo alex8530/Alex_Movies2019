@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.noone.alex_movies2019.ui.DetailsActivity">
 
 
@@ -19,11 +18,9 @@ android:orientation="vertical"
 
 
             <ImageView
-                android:layout_marginTop="5dp"
                 android:id="@+id/details_image"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:layout_margin="3dp"
                 android:layout_gravity="center"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_launcher_background" />
@@ -34,14 +31,14 @@ android:orientation="vertical"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_gravity="right"
-                android:src="@drawable/ic_favorite_border_black_24dp"
                 android:layout_marginTop="-30dp"
-                />
+                android:src="@drawable/ic_favorite_border_black_24dp" />
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="-30dp"
                 android:orientation="vertical">
 
 
@@ -50,10 +47,9 @@ android:orientation="vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="25sp"
                     android:text="@string/tilte_Details"
-                     />
+                    android:textColor="@color/colorAccent"
+                    android:textSize="25sp" />
 
                 <VideoView
                     android:layout_width="match_parent"
@@ -70,14 +66,8 @@ android:orientation="vertical"
                 android:orientation="vertical">
 
                 <TextView
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="20sp"
-                    android:text="@string/release_date"
-                    android:layout_marginStart="5dp" />
+                    style="@style/textPrimeStyle"
+                    android:text="@string/release_date" />
 
                 <TextView
                     android:id="@+id/details_releaseDate"
@@ -85,6 +75,7 @@ android:orientation="vertical"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     tools:text="August 3,2019" />
+
                 <VideoView
                     android:layout_width="match_parent"
                     android:layout_height="5dp" />
@@ -98,13 +89,9 @@ android:orientation="vertical"
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="20sp"
-                    android:text="@string/vote_average"
-                     />
+                    style="@style/textPrimeStyle"
+                    android:text="@string/vote_average" />
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
@@ -115,8 +102,9 @@ android:orientation="vertical"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         tools:text="6.65" />
+
                     <TextView
-                         android:layout_width="wrap_content"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:text="/  10" />
@@ -126,8 +114,7 @@ android:orientation="vertical"
 
                 <VideoView
                     android:layout_width="match_parent"
-                    android:layout_height="5dp"
-                    />
+                    android:layout_height="5dp" />
 
 
             </LinearLayout>
@@ -138,30 +125,59 @@ android:orientation="vertical"
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="20sp"
-                    android:text="@string/overiew"
-                     />
+                    style="@style/textPrimeStyle"
+                    android:text="@string/overiew" />
 
                 <TextView
                     android:id="@+id/details_overView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:text="@string/overview"
-                      />
+                    android:text="@string/overview" />
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/textPrimeStyle"
+                    android:text="@string/trailers" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/details_recycle_trailers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                </android.support.v7.widget.RecyclerView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/textPrimeStyle"
+                    android:text="@string/reviews" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/details_recycle_reviews"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                </android.support.v7.widget.RecyclerView>
+
+            </LinearLayout>
+
+
         </LinearLayout>
-
-
 
 
     </ScrollView>
 
 
-</RelativeLayout>
+</LinearLayout>

@@ -5,11 +5,18 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,10 +24,17 @@ import android.widget.Toast;
 
 import com.example.noone.alex_movies2019.AppExecutors;
 import com.example.noone.alex_movies2019.R;
+import com.example.noone.alex_movies2019.adapter.ReviewAdapter;
+import com.example.noone.alex_movies2019.adapter.TrailersAdapter;
 import com.example.noone.alex_movies2019.database.AppDatabase;
+import com.example.noone.alex_movies2019.listener.ItemClickLitenerObject;
 import com.example.noone.alex_movies2019.model.Movie;
 import com.example.noone.alex_movies2019.model.MovieFav;
 import com.example.noone.alex_movies2019.model.MovieResponse;
+import com.example.noone.alex_movies2019.model.Review;
+import com.example.noone.alex_movies2019.model.Trailer;
+import com.example.noone.alex_movies2019.model.TrailerResponse;
+import com.example.noone.alex_movies2019.repo.MovieRepository;
 import com.example.noone.alex_movies2019.rest.ApiClient;
 import com.example.noone.alex_movies2019.rest.ApiInterface;
 import com.example.noone.alex_movies2019.utils.Connectivity;
@@ -29,6 +43,7 @@ import com.example.noone.alex_movies2019.viewmodels.DetailesViewModel;
 import com.example.noone.alex_movies2019.viewmodels.DetailesViewModelFactory;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -37,7 +52,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DetailsActivity extends AppCompatActivity {
+public class DetailsActivity extends AppCompatActivity implements ItemClickLitenerObject {
     private static final String TAG = "TESTDetailsActivity";
 
     @BindView(R.id.details_title)
@@ -54,17 +69,27 @@ public class DetailsActivity extends AppCompatActivity {
     @BindView(R.id.details_fav)
     ImageView details_fav;
 
+    @BindView(R.id.details_recycle_trailers)
+    RecyclerView details_recycle_trailers;
+
+    @BindView(R.id.details_recycle_reviews)
+    RecyclerView details_recycle_reviews;
+
     long idMovie;
-    ApiInterface mApiInterface;
     ProgressDialog dialog;
     Context mContext;
-    boolean isMovieExistInFavTable;
     Movie currentMovie;
 
-    private String STATE="";
-    private String INSERT_STATE="INSERT";
-    private String DELETE_STATE="DELETE";
-    /*
+    private String STATE = "";
+    private String INSERT_STATE = "INSERT";
+    private String DELETE_STATE = "DELETE";
+    TrailersAdapter trailersAdapter;
+    ReviewAdapter mReviewAdapter ;
+    ArrayList<Review> mReviewArrayList;
+    ArrayList<Trailer> mTrailerArrayList;
+
+
+     /*
 
     You should note that the data install from local database forever here , because in the main activity we download all movies, so here , only thing that we should do is get that movie by id !! Alex !!
 
@@ -82,6 +107,7 @@ public class DetailsActivity extends AppCompatActivity {
         mContext = this;
         ButterKnife.bind(this);
 
+
         //get intent
         Intent intent = getIntent();
         if (intent != null) {
@@ -90,8 +116,24 @@ public class DetailsActivity extends AppCompatActivity {
             }
         }
 
+
+        //init  recycle_trailers
+        details_recycle_trailers.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        details_recycle_trailers.setHasFixedSize(true);
+        trailersAdapter = new TrailersAdapter(this, this);
+
+
+        //init  recycle_Reviews
+        details_recycle_reviews.setLayoutManager(new LinearLayoutManager(this));
+        details_recycle_reviews.setHasFixedSize(true);
+         mReviewAdapter = new ReviewAdapter(this );
+
+
+
+
         //getDetails from api
         getDetails(idMovie);
+
 
         details_fav.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +141,6 @@ public class DetailsActivity extends AppCompatActivity {
                 saveToFavorite();
             }
         });
-
 
 
 
@@ -111,19 +152,19 @@ public class DetailsActivity extends AppCompatActivity {
         //we do not need to insert idDb because it will generate automaticly
         String title = currentMovie.getTitle();
         long id = currentMovie.getId();
-        String pathImage=currentMovie.getPosterPath();
-        String overview=currentMovie.getOverview();
+        String pathImage = currentMovie.getPosterPath();
+        String overview = currentMovie.getOverview();
         double voteAvarage = currentMovie.getVoteAvarage();
         String releaseDate = currentMovie.getReleaseDate();
-        MovieFav movieFav = new MovieFav(id, title,pathImage,overview,voteAvarage,releaseDate);
+        MovieFav movieFav = new MovieFav(id, title, pathImage, overview, voteAvarage, releaseDate);
 
 
-        if (STATE.equals(INSERT_STATE)){
+        if (STATE.equals(INSERT_STATE)) {
 
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
-                    Log.d(TAG, "run: "   + title + id);
+                    Log.d(TAG, "run: " + title + id);
 
                     AppDatabase.getInstance(getApplicationContext()).movieFavDao().insertMovieFavorite(movieFav);
                     Log.d(TAG, "run: insert!!!!!!!!");
@@ -141,11 +182,11 @@ public class DetailsActivity extends AppCompatActivity {
             });
 
         }
-        if (STATE.equals(DELETE_STATE)){
+        if (STATE.equals(DELETE_STATE)) {
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
-                    Log.d(TAG, "run: "  + title + id);
+                    Log.d(TAG, "run: " + title + id);
 
                     AppDatabase.getInstance(getApplicationContext()).movieFavDao().deleteMovieFav(movieFav);
                     Log.d(TAG, "run: delete!!!!!!!!");
@@ -173,15 +214,15 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
 
-
     private void setUpViewModel() {
 
         //get object from view model
         Log.d(TAG, "setUpViewModel: ");
-
         DetailesViewModelFactory factory = new DetailesViewModelFactory(getApplication(), idMovie);
         final DetailesViewModel viewModel
                 = ViewModelProviders.of(this, factory).get(DetailesViewModel.class);
+
+
 
         viewModel.getMovieLiveData().observe(this, new Observer<Movie>() {
             @Override
@@ -194,32 +235,70 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
 
+        viewModel.getTrailersLiveData().observe(this, new Observer<ArrayList<Trailer>>() {
+            //in this viewmodel, only will cash the dataFor keep up againse rotate  , and not save it to Room
+            //so here we do not need to stor data into database becaouse trailer always open by youtube so
+            //    we always reqiue from remote !!but i can use cash as viewmodel as i did here
+            @Override
+            public void onChanged(@Nullable ArrayList<Trailer> trailers) {
+
+                mTrailerArrayList=trailers;
+                trailersAdapter.setTrailerList(mTrailerArrayList);
+                details_recycle_trailers.setAdapter(trailersAdapter);
+                LayoutAnimationController animationController = AnimationUtils.loadLayoutAnimation(
+                        details_recycle_trailers.getContext(),
+                        R.anim.layout_full_down);
+
+                Log.d(TAG, "onChangedssssssssssssss1 : " +trailers.toString());
+                details_recycle_trailers.setLayoutAnimation(animationController);
+            }
+        });
+
+        viewModel.getReviewLiveData().observe(this, new Observer<ArrayList<Review>>() {
+            //Note
+            //i dont save the review in Roon database only in the cash
+            @Override
+            public void onChanged(@Nullable ArrayList<Review> reviews) {
+                mReviewArrayList=reviews;
+                mReviewAdapter.setReviewsList(mReviewArrayList);
+                details_recycle_reviews.setAdapter(mReviewAdapter);
+                LayoutAnimationController animationController = AnimationUtils.loadLayoutAnimation(
+                        details_recycle_reviews.getContext(),
+                        R.anim.layout_full_down);
+
+                Log.d(TAG, "onChangedssssssssssssss2: "+reviews.toString());
+
+                details_recycle_reviews.setLayoutAnimation(animationController);
+            }
+        });
+
+
     }
 
-private void editFavImage() {
+    private void editFavImage() {
         //todo //i can use view model here
 
-     AppDatabase.getInstance(getApplicationContext())
-            .movieFavDao().getMovieFav(currentMovie.getId()).observe(DetailsActivity.this, new Observer<List<MovieFav>>() {
-                @Override
-                public void onChanged(@Nullable List<MovieFav> list) {
-                    if (list != null && !list.isEmpty()) {
-                        Log.d(TAG, "setUpFavoriteImage: " + list.size());
-                        Log.d(TAG, "setUpFavoriteImage: " + list.toString());
+        AppDatabase.getInstance(getApplicationContext())
+                .movieFavDao().getMovieFav(currentMovie.getId()).observe(DetailsActivity.this, new Observer<List<MovieFav>>() {
+            @Override
+            public void onChanged(@Nullable List<MovieFav> list) {
+                if (list != null && !list.isEmpty()) {
+                    Log.d(TAG, "setUpFavoriteImage: " + list.size());
+                    Log.d(TAG, "setUpFavoriteImage: " + list.toString());
 
-                        //that mean the movie is here and we need to delete it BUT SHOW THTE ICON
-                        STATE=DELETE_STATE;
-                        details_fav.setImageResource(R.drawable.ic_favorite_black_24dp);
-                    }else {
-                        Log.d(TAG, "editFavImage: Empty");
-                        STATE=INSERT_STATE;
-                        details_fav.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                    //that mean the movie is here and we need to delete it BUT SHOW THTE ICON
+                    STATE = DELETE_STATE;
+                    details_fav.setImageResource(R.drawable.ic_favorite_black_24dp);
+                } else {
+                    Log.d(TAG, "editFavImage: Empty");
+                    STATE = INSERT_STATE;
+                    details_fav.setImageResource(R.drawable.ic_favorite_border_black_24dp);
 
-                    }
                 }
-            });
+            }
+        });
 
-}
+    }
 
     private void bindDetailsWithUi(Movie movie) {
         details_title.setText(movie.getTitle());
@@ -238,5 +317,14 @@ private void editFavImage() {
 
     }
 
+
+    @Override
+    public void onClickItemObject(int position) {
+        String url = "https://www.youtube.com/watch?v=".concat(mTrailerArrayList.get(position).getKey());
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
+
+    }
 
 }

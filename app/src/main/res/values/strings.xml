@@ -17,4 +17,6 @@
     <string name="vote_average">Vote Average</string>
     <string name="overiew">Overiew</string>
     <string name="favorite">Favorite</string>
+    <string name="trailers">Trailers</string>
+    <string name="reviews">Reviews</string>
 </resources>

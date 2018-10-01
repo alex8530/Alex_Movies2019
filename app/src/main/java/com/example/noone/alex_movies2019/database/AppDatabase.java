@@ -18,7 +18,7 @@ import com.example.noone.alex_movies2019.model.MovieFav;
 /**
  * Created by NoOne on 9/29/2018.
  */
-@Database(entities = {Movie.class, MovieFav.class}, version = 3, exportSchema = false)
+@Database(entities = {Movie.class, MovieFav.class}, version = 4, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String TAG = "TESTAppDatabase";
     private static final String LOG_TAG = AppDatabase.class.getSimpleName();
