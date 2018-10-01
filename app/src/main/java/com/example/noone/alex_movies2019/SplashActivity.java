@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.example.noone.alex_movies2019.ui.MainActivity;
+
 /**
  * Created by NoOne on 9/8/2018.
  */

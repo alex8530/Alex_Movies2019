@@ -2,6 +2,8 @@ package com.example.noone.alex_movies2019.rest;
 
 import com.example.noone.alex_movies2019.model.Movie;
 import com.example.noone.alex_movies2019.model.MovieResponse;
+import com.example.noone.alex_movies2019.model.Review;
+import com.example.noone.alex_movies2019.model.Trailer;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -23,4 +25,12 @@ public interface ApiInterface {
 
     @GET("movie/{id}")
     Call<Movie> getMovieDetails(@Path("id") long id, @Query("api_key") String apiKey);
+
+
+    @GET("movie/{id}/videos")
+    Call<Trailer> loadTrailers(@Path("id") String id, @Query("api_key") String api_key);
+
+    @GET("/3/movie/{id}/reviews")
+    Call<Review> loadReviews(@Path("id") String id, @Query("api_key") String api_key);
+
 }

@@ -11,12 +11,14 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.noone.alex_movies2019.daos.MovieDao;
+import com.example.noone.alex_movies2019.daos.MovieFavDao;
 import com.example.noone.alex_movies2019.model.Movie;
+import com.example.noone.alex_movies2019.model.MovieFav;
 
 /**
  * Created by NoOne on 9/29/2018.
  */
-@Database(entities = {Movie.class}, version = 1, exportSchema = false)
+@Database(entities = {Movie.class, MovieFav.class}, version = 3, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String TAG = "TESTAppDatabase";
     private static final String LOG_TAG = AppDatabase.class.getSimpleName();
@@ -38,4 +40,5 @@ public abstract class AppDatabase extends RoomDatabase {
 
 
     public abstract MovieDao movieDao();
+    public abstract MovieFavDao movieFavDao();
 }

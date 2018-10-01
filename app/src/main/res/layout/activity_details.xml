@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
 android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.noone.alex_movies2019.DetailsActivity">
+    tools:context="com.example.noone.alex_movies2019.ui.DetailsActivity">
 
 
     <ScrollView
@@ -27,6 +27,16 @@ android:orientation="vertical"
                 android:layout_gravity="center"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_launcher_background" />
+
+
+            <ImageView
+                android:id="@+id/details_fav"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="right"
+                android:src="@drawable/ic_favorite_border_black_24dp"
+                android:layout_marginTop="-30dp"
+                />
 
 
             <LinearLayout
@@ -95,13 +105,25 @@ android:orientation="vertical"
                     android:textSize="20sp"
                     android:text="@string/vote_average"
                      />
-
-                <TextView
-                    android:id="@+id/details_voteAverage"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    tools:text="6.65" />
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/details_voteAverage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        tools:text="6.65" />
+                    <TextView
+                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="/  10" />
+
+                </LinearLayout>
+
+
                 <VideoView
                     android:layout_width="match_parent"
                     android:layout_height="5dp"
@@ -142,4 +164,4 @@ android:orientation="vertical"
     </ScrollView>
 
 
-</LinearLayout>
+</RelativeLayout>

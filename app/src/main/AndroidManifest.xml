@@ -3,9 +3,9 @@
     package="com.example.noone.alex_movies2019">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- When targeting API 28 or higher -->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".App"
@@ -16,20 +16,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SplashActivity" android:theme="@style/SplashTheme"
-             >
+            android:name=".SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".MainActivity" />
+        <activity android:name=".ui.MainActivity" />
         <activity
-            android:name=".DetailsActivity"
-            android:parentActivityName=".MainActivity" />
-
+            android:name=".ui.DetailsActivity"
+            android:parentActivityName=".ui.MainActivity" />
+        <activity android:name=".ui.FavoriteActivity"
+            android:parentActivityName=".ui.MainActivity"></activity>
     </application>
 
 </manifest>

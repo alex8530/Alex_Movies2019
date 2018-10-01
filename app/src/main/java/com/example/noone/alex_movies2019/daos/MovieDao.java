@@ -9,6 +9,7 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import com.example.noone.alex_movies2019.model.Movie;
+import com.example.noone.alex_movies2019.model.MovieFav;
 
 import java.util.List;
 
@@ -19,9 +20,7 @@ import java.util.List;
 @Dao
 public interface MovieDao {
 
-//
-//    @Query("SELECT * FROM movie")
-//    LiveData<List<Movie>> loadAllMovies();
+
 
     @Query("SELECT * FROM movie where type = 0 ")
     LiveData<List<Movie>> loadAllPopular();
@@ -45,4 +44,12 @@ public interface MovieDao {
 
     @Query("select * from movie where id = :id")
     LiveData<Movie> findMovieById(long id);
+
+
+
+
+
 }
+
+
+

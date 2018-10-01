@@ -8,8 +8,10 @@ import android.util.Log;
 
 import com.example.noone.alex_movies2019.AppExecutors;
 import com.example.noone.alex_movies2019.daos.MovieDao;
+import com.example.noone.alex_movies2019.daos.MovieFavDao;
 import com.example.noone.alex_movies2019.database.AppDatabase;
 import com.example.noone.alex_movies2019.model.Movie;
+import com.example.noone.alex_movies2019.model.MovieFav;
 import com.example.noone.alex_movies2019.model.MovieResponse;
 import com.example.noone.alex_movies2019.rest.ApiClient;
 import com.example.noone.alex_movies2019.rest.ApiInterface;
@@ -33,6 +35,7 @@ import retrofit2.Response;
 
 public class MovieRepository {
     private final MovieDao movieDao;
+    private final MovieFavDao  movieFavDao;
     private final ApiInterface apiInterface;
 
 
@@ -49,6 +52,7 @@ public class MovieRepository {
 
        AppDatabase appDatabase = AppDatabase.getInstance(application);
        movieDao= appDatabase.movieDao();
+       movieFavDao= appDatabase.movieFavDao();
        apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
 
@@ -164,5 +168,9 @@ public class MovieRepository {
         return movieDao.findMovieById(movie_id );
 
     }
-//
+
+
+    public LiveData<List<MovieFav>> getAllFavMoviesLiveData(){
+       return movieFavDao.getAllFavorite();
+    }
 }
