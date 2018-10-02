@@ -60,7 +60,7 @@ public class MoviesFavoriteAdapter extends RecyclerView.Adapter<MoviesFavoriteAd
 
          String fullPath= Constant.BASE_IMAGE_URL+pathImage;
 
-        Picasso.get().load(fullPath).into(holder.imageViewPoster);
+        Picasso.get().load(fullPath).placeholder(R.drawable.ic_play_arrow_black_24dp).error(R.drawable.ic_play_arrow_black_24dp).into(holder.imageViewPoster);
     }
 
     @Override

@@ -62,7 +62,7 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.Traile
 
         String fullPathImage = Constant.makeThumbnailURL(key);
 
-        Picasso.get().load(fullPathImage).placeholder(R.drawable.ic_play_arrow_black_24dp).into(holder.imageTrailer);
+        Picasso.get().load(fullPathImage).placeholder(R.drawable.ic_play_arrow_black_24dp).error(R.drawable.ic_play_arrow_black_24dp).into(holder.imageTrailer);
 
         //todo add error check to picasso
 

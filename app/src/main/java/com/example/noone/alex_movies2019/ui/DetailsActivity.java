@@ -19,6 +19,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +66,8 @@ public class DetailsActivity extends AppCompatActivity implements ItemClickLiten
     TextView details_overView;
     @BindView(R.id.details_image)
     ImageView details_image;
+    @BindView(R.id.details_ratingBar)
+    RatingBar details_ratingBar;
 
     @BindView(R.id.details_fav)
     ImageView details_fav;
@@ -305,6 +308,10 @@ public class DetailsActivity extends AppCompatActivity implements ItemClickLiten
         details_releaseDate.setText(movie.getReleaseDate());
         details_voteAverage.setText(String.valueOf(movie.getVoteAvarage()));
         details_overView.setText(movie.getOverview());
+        details_ratingBar.setMax(10);
+        String floatString = String.valueOf(movie.getVoteAvarage());
+        details_ratingBar.setRating((Float.valueOf(floatString))/2f);
+
 
         String fullPath = Constant.BASE_IMAGE_URL + movie.getPosterPath();
 

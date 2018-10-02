@@ -98,16 +98,21 @@
 
                     <TextView
                         android:id="@+id/details_voteAverage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
+                        style="@style/textSecondStyle"
                         tools:text="6.65" />
 
                     <TextView
+                        style="@style/textSecondStyle"
+                        android:text="@string/_10" />
+
+                    <RatingBar
+                        android:id="@+id/details_ratingBar"
+                        style="?android:attr/ratingBarStyleIndicator"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:text="/  10" />
+                        android:layout_marginLeft="10dp"
+                        android:isIndicator="true"
+                        android:stepSize="0.25" />
 
                 </LinearLayout>
 
@@ -130,9 +135,7 @@
 
                 <TextView
                     android:id="@+id/details_overView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
+                    style="@style/textSecondStyle"
                     android:text="@string/overview" />
 
             </LinearLayout>
