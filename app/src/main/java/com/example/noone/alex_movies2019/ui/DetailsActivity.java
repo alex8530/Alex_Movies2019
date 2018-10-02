@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Explode;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -145,8 +146,16 @@ public class DetailsActivity extends AppCompatActivity implements ItemClickLiten
             }
         });
 
+        initAnimation();
 
 
+
+    }
+
+    private void initAnimation() {
+        Explode enterTransition = new Explode();
+        enterTransition.setDuration(1000);
+        getWindow().setEnterTransition(enterTransition);
     }
 
 
@@ -320,6 +329,8 @@ public class DetailsActivity extends AppCompatActivity implements ItemClickLiten
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher_round)
                 .into(details_image);
+
+
 
 
     }

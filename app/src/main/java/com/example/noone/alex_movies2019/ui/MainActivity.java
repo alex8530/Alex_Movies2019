@@ -1,10 +1,12 @@
 package com.example.noone.alex_movies2019.ui;
 
+import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -213,7 +215,20 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
         Log.d(TAG, "goToDetailesActivity: ");
         Intent intent = new Intent(this, DetailsActivity.class);
         intent.putExtra(Constant.MOVIE_ID, id);
-        startActivity(intent);
+
+
+        //add animation
+        ActivityOptions options=null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            options = ActivityOptions.makeSceneTransitionAnimation(this);
+            startActivity(intent,options.toBundle());
+        }else {
+            startActivity(intent );
+        }
+
+
+
+
     }
 
     @Override
