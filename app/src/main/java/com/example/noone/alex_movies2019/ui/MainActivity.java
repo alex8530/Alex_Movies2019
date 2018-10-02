@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,6 +39,10 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
     MoviesAdapter adapter;
     private static final String TAG = "TESTMainActivity";
     Context mContext;
+    private String CURRUNT_STAT;
+    private String POPULARE_STAT = "POPULARE";
+    private String TOPRATED_STAT = "TOPRATED";
+    Menu mMenu;
 
 
     @Override
@@ -84,11 +89,25 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
         //get getTopRatedMovies and set into recycle view
         //by defult i will sort it on Top rated and put in the menu check=true on top rated
 
-        setUpViewModelForTopRatedMovie();
+        if (savedInstanceState != null && savedInstanceState.getString("KEY") != null) {
+
+            if (savedInstanceState.getString("KEY").equals(POPULARE_STAT)) {
+                setUpViewModelForPopularMovies();
+            }
+            if (savedInstanceState.getString("KEY").equals(TOPRATED_STAT)) {
+                setUpViewModelForTopRatedMovie();
+            }
+        } else {
+            //default state
+            setUpViewModelForTopRatedMovie();
+
+        }
+
 
     }
 
     private void setUpViewModelForTopRatedMovie() {
+        CURRUNT_STAT = TOPRATED_STAT;
 
 //
         MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
@@ -112,6 +131,8 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
 
     private void setUpViewModelForPopularMovies() {
 
+
+        CURRUNT_STAT = POPULARE_STAT;
 //
         MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         viewModel.getPopularMovie().observe(this, new Observer<Resource<List<Movie>>>() {
@@ -169,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
         }
 
         if (itemId == R.id.menu_favorite) {
-             startActivity(new Intent(MainActivity.this,FavoriteActivity.class));
+            startActivity(new Intent(MainActivity.this, FavoriteActivity.class));
 
         }
 
@@ -229,6 +250,15 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
     protected void onRestart() {
         super.onRestart();
         Log.d(TAG, "onRestart: ");
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+        Log.d(TAG, "onSaveInstanceState: " + CURRUNT_STAT);
+        outState.putString("KEY", CURRUNT_STAT);
+        super.onSaveInstanceState(outState);
+
     }
 }
 //todo  set backgraound
