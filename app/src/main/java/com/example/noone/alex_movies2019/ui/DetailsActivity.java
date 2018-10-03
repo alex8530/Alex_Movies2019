@@ -13,8 +13,11 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
@@ -80,6 +83,7 @@ public class DetailsActivity extends AppCompatActivity implements ItemClickLiten
     RecyclerView details_recycle_reviews;
 
     long idMovie;
+    String title;
     ProgressDialog dialog;
     Context mContext;
     Movie currentMovie;
@@ -111,12 +115,19 @@ public class DetailsActivity extends AppCompatActivity implements ItemClickLiten
         mContext = this;
         ButterKnife.bind(this);
 
+        //toolbar
+        Toolbar toolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
 
         //get intent
         Intent intent = getIntent();
         if (intent != null) {
             if (intent.hasExtra(Constant.MOVIE_ID)) {
                 idMovie = intent.getLongExtra(Constant.MOVIE_ID, 0);
+            }
+            if (intent.hasExtra(Constant.MOVIE_TITLE)) {
+                  title = intent.getStringExtra(Constant.MOVIE_TITLE);
+                toolbar.setTitle(title);
             }
         }
 
@@ -343,6 +354,41 @@ public class DetailsActivity extends AppCompatActivity implements ItemClickLiten
         i.setData(Uri.parse(url));
         startActivity(i);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.detailes_item, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+
+
+        if (itemId == R.id.details_menu_share) {
+            //share the firest trailes only
+            String url = "https://www.youtube.com/watch?v=".concat(mTrailerArrayList.get(0).getKey());
+ 
+            shareTextUrl(url);
+            return true;
+        }
+
+
+        return super.onOptionsItemSelected(item);
+
+    }
+    private void shareTextUrl(String url) {
+        Intent share = new Intent(android.content.Intent.ACTION_SEND);
+        share.setType("text/plain");
+        share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+
+        share.putExtra(Intent.EXTRA_SUBJECT, title);
+        share.putExtra(Intent.EXTRA_TEXT, url);
+
+        startActivity(Intent.createChooser(share, "Share link!"));
     }
 
 }

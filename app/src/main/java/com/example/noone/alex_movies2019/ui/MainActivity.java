@@ -56,23 +56,6 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
         ButterKnife.bind(this);
 
 
-        //check if this time is not the first time to login to this app
-        //but check befor that if there is no network connection , because we need to get data from database if there is no internt
-
-//        if (!Connectivity.isConnected(mContext)|| !Connectivity.isConnectedWifi(mContext)) {
-//            if (getTopRatedFromDatabase()!= null){
-//                if (getTopRatedFromDatabase().isEmpty()){
-//                    //the list is  empty
-//                    Log.e(TAG, "onCreate:list is empty and  null  and it is first time"  );
-//                    firstTimeTopMovies=true;
-//
-//                }else {
-//                    firstTimeTopMovies=false;
-//                }
-//            }
-//        }
-
-
         //toolbar
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
@@ -205,16 +188,18 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
     public void onClickItemObject(int position) {
         Movie movie = adapter.getMoviesList().get(position);
         long id = movie.getId();
+        String title=movie.getTitle();
         Log.d(TAG, "onClickItemObject: ");
-        goToDetailesActivity(id);
+        goToDetailesActivity(id,title);
 
     }
 
 
-    private void goToDetailesActivity(long id) {
+    private void goToDetailesActivity(long id,String title) {
         Log.d(TAG, "goToDetailesActivity: ");
         Intent intent = new Intent(this, DetailsActivity.class);
         intent.putExtra(Constant.MOVIE_ID, id);
+        intent.putExtra(Constant.MOVIE_TITLE, title);
 
 
         //add animation
