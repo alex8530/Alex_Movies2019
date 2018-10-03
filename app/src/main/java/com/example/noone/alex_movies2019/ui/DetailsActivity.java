@@ -371,7 +371,7 @@ public class DetailsActivity extends AppCompatActivity implements ItemClickLiten
         if (itemId == R.id.details_menu_share) {
             //share the firest trailes only
             String url = "https://www.youtube.com/watch?v=".concat(mTrailerArrayList.get(0).getKey());
- 
+
             shareTextUrl(url);
             return true;
         }
