@@ -23,10 +23,13 @@ import android.view.animation.LayoutAnimationController;
 
 import com.example.noone.alex_movies2019.R;
 import com.example.noone.alex_movies2019.adapter.MoviesAdapter;
+import com.example.noone.alex_movies2019.adapter.MoviesFavoriteAdapter;
 import com.example.noone.alex_movies2019.listener.ItemClickLitenerObject;
 import com.example.noone.alex_movies2019.model.Movie;
+import com.example.noone.alex_movies2019.model.MovieFav;
 import com.example.noone.alex_movies2019.repo.Resource;
 import com.example.noone.alex_movies2019.utils.Constant;
+import com.example.noone.alex_movies2019.viewmodels.FavoriteViewModel;
 import com.example.noone.alex_movies2019.viewmodels.MainViewModel;
 
 import java.util.List;
@@ -175,13 +178,32 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
         }
 
         if (itemId == R.id.menu_favorite) {
-            startActivity(new Intent(MainActivity.this, FavoriteActivity.class));
+             setUpViewModelForFavoriteMovie();
 
         }
 
 
         return super.onOptionsItemSelected(item);
 
+    }
+
+    private void setUpViewModelForFavoriteMovie() {
+        MoviesFavoriteAdapter  adapterFav = new MoviesFavoriteAdapter(this, this);
+        FavoriteViewModel viewModel = ViewModelProviders.of(this).get(FavoriteViewModel.class);
+        viewModel.getAllFavMovies().observe(this, new Observer<List<MovieFav>>() {
+            @Override
+            public void onChanged(@Nullable List<MovieFav> movieFavs) {
+                if (movieFavs  != null) {
+
+                    Log.d(TAG, "onChanged: " + movieFavs.toString());
+                    adapterFav.setMoviesFavList(movieFavs);
+                    recyclerView.setAdapter(adapterFav);
+                    recyclerView.scheduleLayoutAnimation();
+                    adapterFav.notifyDataSetChanged();
+
+                }
+            }
+        });
     }
 
     @Override
@@ -216,41 +238,6 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
 
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop: ");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause: ");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy: ");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume: ");
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart: ");
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.d(TAG, "onRestart: ");
-    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

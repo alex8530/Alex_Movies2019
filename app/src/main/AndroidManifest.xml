@@ -28,8 +28,6 @@
         <activity
             android:name=".ui.DetailsActivity"
             android:parentActivityName=".ui.MainActivity" />
-        <activity android:name=".ui.FavoriteActivity"
-            android:parentActivityName=".ui.MainActivity"></activity>
     </application>
 
 </manifest>
