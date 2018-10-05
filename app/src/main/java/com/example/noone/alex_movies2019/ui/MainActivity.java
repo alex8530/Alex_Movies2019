@@ -1,13 +1,11 @@
 package com.example.noone.alex_movies2019.ui;
 
 import android.app.ActivityOptions;
-import android.app.ProgressDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -47,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
     private String CURRUNT_STAT;
     private String POPULARE_STAT = "POPULARE";
     private String TOPRATED_STAT = "TOPRATED";
-    Menu mMenu;
+    MoviesFavoriteAdapter  adapterFav;
 
 
     @Override
@@ -178,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
         }
 
         if (itemId == R.id.menu_favorite) {
-             setUpViewModelForFavoriteMovie();
+            startActivity(new Intent(MainActivity.this, FavoriteActivity.class));
 
         }
 
@@ -187,24 +185,6 @@ public class MainActivity extends AppCompatActivity implements ItemClickLitenerO
 
     }
 
-    private void setUpViewModelForFavoriteMovie() {
-        MoviesFavoriteAdapter  adapterFav = new MoviesFavoriteAdapter(this, this);
-        FavoriteViewModel viewModel = ViewModelProviders.of(this).get(FavoriteViewModel.class);
-        viewModel.getAllFavMovies().observe(this, new Observer<List<MovieFav>>() {
-            @Override
-            public void onChanged(@Nullable List<MovieFav> movieFavs) {
-                if (movieFavs  != null) {
-
-                    Log.d(TAG, "onChanged: " + movieFavs.toString());
-                    adapterFav.setMoviesFavList(movieFavs);
-                    recyclerView.setAdapter(adapterFav);
-                    recyclerView.scheduleLayoutAnimation();
-                    adapterFav.notifyDataSetChanged();
-
-                }
-            }
-        });
-    }
 
     @Override
     public void onClickItemObject(int position) {
