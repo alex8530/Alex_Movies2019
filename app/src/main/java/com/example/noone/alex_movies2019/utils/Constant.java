@@ -1,3 +1,4 @@
+
 package com.example.noone.alex_movies2019.utils;
 
 import android.content.Context;
@@ -28,3 +29,4 @@ public final class Constant {
         return  YT_THUMB_URL.concat(key).concat("/hqdefault.jpg");
     }
 }
+
